@@ -52,7 +52,7 @@ Definitions:
 - *Alphabet:* a finite non-empty set. Usually called $Sigma$ here.
 - *Symbol:* an element of an alphabet.
 - *String:* a *_string_* over an alphabet $Sigma$ is a finite sequence of symbols in $Sigma$. Strings are *_not_* sets i.e. order matters and duplicates may be present.
-  - *length*: the *_length_* of a string $omega$ over an alphabet $Sigma$ (denoted by $abs(omega)$) is the number of symbols in the sequence. The empty string over any alphabet is denoted by $lambda$. All strings have natural length.
+  - *Length*: the *_length_* of a string $omega$ over an alphabet $Sigma$ (denoted by $abs(omega)$) is the number of symbols in the sequence. The empty string over any alphabet is denoted by $lambda$. All strings have natural length.
   - For any alphabet $Sigma$, *#Sigstar* is the set of _all_ strings over $Sigma$.
 - *String concatenation:* the concatenation of two strings $mu$ and $nu$ is just the $nu$ appended to $mu$, notated as $mu dot nu$. Its length is the sum of the length of the two strings $abs(mu dot nu) = abs(mu) + abs(nu)$.
 - *Substring:* a string $mu$ is a *_substring_* of $omega$ if $omega = om1 dot mu dot om2$, where $om1, om2, mu in Sigstar$.
@@ -207,9 +207,9 @@ Same 7-tuple $M$ as standard Turing machines - just different type on the
 transition function.
 
 Similar to NFAs, where the type of the transition is just a set of possible
-outputs of a reqular Turing machine i.e. $delta: Q times Gamma arrow.r cal(P)(Q
-times Gamma times {"L", "R"})$ such that $delta(qacc, sigma) = delta(qrej,
-sigma) = emptyset$ for all symbols $sigma in Sigma$.
+outputs of a standard Turing machine i.e. $delta: Q times Gamma arrow.r
+cal(P)(Q times Gamma times {"L", "R"})$ such that $delta(qacc, sigma) =
+delta(qrej, sigma) = emptyset$ for all symbols $sigma in Sigma$.
 
 Let $M = (Q, Sigma, Gamma, delta, q0, qacc, qrej)$ be a nondeterministic Turing machine and let $omega in Sigstar$.
 - $M$ *_accepts_* $omega$ if there's at least one finite sequence of moves from $q0 omega$ that ends with $M$ in $qacc$
@@ -222,7 +222,7 @@ each other - meaning they recognize and decide the same languages.
 == Simulations
 
 
-TODO: give a more concrete set of steps, perhaps from an example like lecture #11
+TODO: give a more concrete set of steps, perhaps from an example like lecture \#11
 
 #[
   #set enum(numbering: "(a)")
@@ -266,7 +266,7 @@ TODO: give a more concrete set of steps, perhaps from an example like lecture #1
 
 For any fixed integer $k >= 1$, a *_$k$-tape Turing Machine_* is a Turing
 machine with $k$ tapes with heads that can move independently, and transitions
-allow left, right and stay moves. Like the 7-tuple $M = (Q, Sigma, Gamma,
+allow left, right, and stay moves. Like the 7-tuple $M = (Q, Sigma, Gamma,
 delta, q0, qacc, qrej)$ where everything is the same as standard Turing machines
 except the transition function has the type $delta : Qtran times Gamma^k arrow.r
 Q times (Gamma times {"L","R","S"})^k$.
@@ -311,7 +311,7 @@ The *_language_* $L$ of a multi-tape Turing machine $M$, as well as whether M
 
 === Multi-Tape Turing Machines That Compute Functions
 
-Let $k$ be a postive integer. A *_$k$-tape Turing machine that computes a
+Let $k$ be a positive integer. A *_$k$-tape Turing machine that computes a
 function_* can be modelled as a 7-tuple $M = (Q, Sig1, Sig2, Gamma, delta,
 q0, qhalt)$ where $Q, Sig1, Sig2, Gamma, q0$, and $qhalt$ are similar to
 standard Turing machines that compute functions, but where the transition
@@ -322,7 +322,7 @@ Configurations (including initial configurations) and transitions/moves are the
 same as for standard Turing machines.
 
 A $k$-tape Turing machine that computes functions $M$ computes a function
-#functype if the followint proerties are satisfied, for every string
+#functype if the following properties are satisfied, for every string
 #arbstring1:
 - If $f(omega)$ is defined then $q0multi tackstar qhalt " " sharp " " qhalt " "
   sharp " " qhalt " " sharp " " dots " " sharp " " qhalt " " f(omega)$ i.e. the
@@ -357,7 +357,7 @@ alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
   $M$ (with some input alphabet $Sigma$) and input strings #arbstring (one
   input string and Turing machine per string $mu in LTMI$).
 
-#LTM and #LTMI are both *_decideable._*
+#LTM and #LTMI are both *_decidable._*
 
 #[
   #let arbstringTM = $mu in SigstarTM$
@@ -384,10 +384,10 @@ alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
   *_accepts_* $omega$. In particular, it is the language of any universal
   Turing machine i.e. $ATM = L(MUTM)$.
 
-  Since UTMs exist, #ATM is *_recognizeable_*. However, #ATM *_is not
+  Since UTMs exist, #ATM is *_recognizable_*. However, #ATM *_is not
   decidable._*
 
-  The complement of #ATM, #ATMC is *_unrecognizeable._*
+  The complement of #ATM, #ATMC is *_unrecognizable._*
 
 ]
 
@@ -421,12 +421,13 @@ alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
 
   Let #LSig1 and #LSig2. Then #L1 is *_oracle reducible_* to #L2 (notated $L1
   oreduc L2$) if there exists an algorithm that decides membership in #L1 that
-  uses an oracle (i.e. a procedure or subroutine) deciding membership in #L2.
+  uses an oracle (i.e. a procedure or subroutine) that decides membership in
+  #L2.
 
   === Describing an Oracle Reduction Between Languages
 
-  TO describe an oracle reduction from a language #LSig1 to a language #LSig2:
-  + Give pseucode for an algorithm that decides membership in #L1 using a
+  To describe an oracle reduction from a language #LSig1 to a language #LSig2:
+  + Give pseudocode for an algorithm that decides membership in #L1 using a
     separate *_Boolean method_* that decides membership in #L1.
     - _No need to write an algorithm that decides #L2, just assume one exists
       and is correct_.
