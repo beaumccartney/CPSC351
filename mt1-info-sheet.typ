@@ -189,7 +189,7 @@ Note that $y^i$ is the concatenation of $i$ copies of $y$.
 
 === Proving language is not regular with pumping lemma:
 + Assume (to obtain a contradiction) language is regular
-+ Observe that conditions in the pumping lemma are satisfied (write them down)
++ Observe that the pumping lemma holds for the language and write down its conditions 
 + Introduce the "pumping length" $p$
 + Introduce a string in the language $s$ ($s$ is the string in the lemma) with length $abs(s) >= p$
   - $s$ usually depends on $p$
