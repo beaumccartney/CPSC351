@@ -12,8 +12,6 @@
   size: 7.0pt
 )
 
-#show "turing" : "Turing"
-
 #let blank = $union.sq$
 
 #let q0    = $q_0$
@@ -189,7 +187,7 @@ qhalt)$ where:
 - $delta$ is similar to standard Turing machines with a slightly different type: $delta : (Qnohalt) times Gamma arrow.r Q times Gamma times {"L", "R"}$.
 
 Configurations (including initial configurations) and transitions/moves are the
-same as for standard turing machines.
+same as for standard Turing machines.
 
 If a Turing machine computes a partial function #functype then the following
 properties are satisfied, for every string #arbstring1:
@@ -249,10 +247,10 @@ TODO: give a more concrete set of steps, perhaps from an example like lecture #1
     $C1 tack C2$, describe how #Mhat moves from a representation of #C1 to #C2
   - *_Cleanup:_* describe anything that #Mhat must do to end its computation,
     after simulating $M$'s final step
-      - turing machines that recognize languages may not need anything
+      - Turing machines that recognize languages may not need anything
 
   Finally (if not obvious), a *_proof of correctness_* should be given. When
-  both $M$ and #Mhat are turing machine variants with the same input alphabet
+  both $M$ and #Mhat are Turing machine variants with the same input alphabet
   $Sigma$, the following should be shown:
 
   For every string #arbstring and every $t in NN$, if the execution of $M$ on
@@ -321,7 +319,7 @@ function $delta$ has the type $delta : (Qnohalt) times Gamma^k arrow.r Q
 times (Gamma times {L, R, S})^k$.
 
 Configurations (including initial configurations) and transitions/moves are the
-same as for standard turing machines.
+same as for standard Turing machines.
 
 A $k$-tape Turing machine that computes functions $M$ computes a function
 #functype if the followint proerties are satisfied, for every string
@@ -349,26 +347,26 @@ recognize and decide the same functions.
 
 #let MUTM = $M_"UTM"$
 
-Consider only "non-trivial" turing machines where $q0 != qacc$ and $q0 != qrej$.
+Consider only "non-trivial" Turing machines where $q0 != qacc$ and $q0 != qrej$.
 
-An *_encoding_* of a standard turing machine #turing is a string over the
+An *_encoding_* of a standard Turing machine #turing is a string over the
 alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
 
 - $LTM subset.eq SigstarTM$ is the language of encodings of Turing machines.
 - $LTMI subset.eq SigstarTM$ is the language of encodings of Turing machines
   $M$ (with some input alphabet $Sigma$) and input strings #arbstring (one
-  input string and turing machine per string $mu in LTMI$).
+  input string and Turing machine per string $mu in LTMI$).
 
 #LTM and #LTMI are both *_decideable._*
 
 #[
   #let arbstringTM = $mu in SigstarTM$
 
-  A *_universal turing machine_* is a (standard or multi-tape) turing machine
+  A *_universal Turing machine_* is a (standard or multi-tape) Turing machine
   #MUTM, with input alphabet #SigTM such that for every string #arbstringTM,
   the following properties are satisfied:
   - if $mu in.not LTMI$, #MUTM *_rejects_* $mu$.
-  Otherwise, $mu in LTMI$ so that $mu$ encodes a turing machine $M$ (with some
+  Otherwise, $mu in LTMI$ so that $mu$ encodes a Turing machine $M$ (with some
   input alphabet $Sigma$) and an input string #arbstring.
   - #MUTM *_accepts_* $mu$ *_if and only if_* $M$ *_accepts_* $omega$
   - #MUTM *_rejects_* $mu$ *_if and only if_* $M$ *_rejects_* $omega$
@@ -376,7 +374,7 @@ alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
 
   // #MUTM begins by checking its input string #arbstringTM belongs to #LTMI,
   // *_rejecting_* $mu$ if $mu in.not LTMI$. If $mu in LTMI$, $mu$ is an encoding
-  // of some (standard) turing machine $M = (Q, Sigma, Gamma, delta, q0, qacc,
+  // of some (standard) Turing machine $M = (Q, Sigma, Gamma, delta, q0, qacc,
   // qrej)$ and an input string #arbstring. #MUTM continues by *_simulating_*
   // execution of $M$ on $omega$.
 
@@ -384,7 +382,7 @@ alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
   $ATM subset.eq LTMI$ is the language of encodings of Turing machines #turing
   (with some input alphabet $Sigma$) and input strings #arbstring such that $M$
   *_accepts_* $omega$. In particular, it is the language of any universal
-  turing machine i.e. $ATM = L(MUTM)$.
+  Turing machine i.e. $ATM = L(MUTM)$.
 
   Since UTMs exist, #ATM is *_recognizeable_*. However, #ATM *_is not
   decidable._*
@@ -437,7 +435,7 @@ alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
     membership in #L2
   + Show that _if there exists_ a multi-tape Turing machine $M_2$ that decides
     membership in #L2, then this can be used as a component in a multi-tape
-    turing machine $M_1$ that would decide membership in #L1
+    Turing machine $M_1$ that would decide membership in #L1
 
   The set of oracle reductions forms a *_reducibility_* as defined above.
 
