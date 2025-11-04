@@ -6,6 +6,10 @@
 #set page(
   paper: "us-letter",
   margin: 0.25cm,
+  columns: 2,
+)
+#set columns(
+  gutter: 10pt,
 )
 
 #set par(
@@ -13,16 +17,16 @@
 )
 
 #set text(
-  size: 7.0pt
+  size: 7.40pt
 )
 
 #let blank = $union.sq$
 
-#let q0    = $q_0$
+#let q0      = $q_0$
 #let q0multi = $q0 " "omega " "sharp " "q0 " "sharp " "q0 " "sharp " "dots " "sharp " "q0$
-#let qacc  = $q_"accept"$
-#let qrej  = $q_"reject"$
-#let qhalt = $q_"halt"$
+#let qacc    = $q_"accept"$
+#let qrej    = $q_"reject"$
+#let qhalt   = $q_"halt"$
 
 #let Sig1 = $Sigma_1$
 #let Sig2 = $Sigma_2$
@@ -57,9 +61,20 @@
 #let LSig2 = $L2 subset.eq Sigstar2$
 #let LSig3 = $L3 subset.eq Sigstar3$
 
-TODO:
-- how make turing machines that compute functions?
-- how to have a turing machine "call a subroutine" provided by another turing machine?
+// TODO:
+// - how make turing machines that compute functions?
+// - how to have a turing machine "call a subroutine" provided by another turing machine?
+// - two-column layout
+// - make explicit that computability requires turing machine that computes
+//   functions to exist and those must halt on all valid inputs
+// - when describing turing machine for reductions
+//   - num tapes
+//   - what each tape is for
+//   - alphabet changes + others to enable sweeping, finding beginning, etc
+//   - sweeps and what they do (copy, clean, etc)
+//   - initialization + cleanup
+//   - simulation steps?
+//   - halting conds
 
 // == Alphabets, Strings, and Languages
 //
@@ -154,57 +169,21 @@ Let #arbstring, and $M$ be a Turing machine.
 
 === Processing Languages
 
-Let $L subset.eq Sigstar$.
+Let $L subset.eq Sigstar$, and $M$ be a turing machine.
 
-- $M$ *_recognizes_* $L$ if $M$ accepts every string $omega in L$ and $M$
-  either *_rejects_* or *_loops_* on every string $omega in.not L$. $L$ is the
-  *_language, L(M), of $M$_* if $M$ recognizes $L$. $L$ is
+- $M$ *_recognizes_* $L$ if $M$ accepts every string that belongs to $L$ and
+  $M$ either *_rejects_* or *_loops_* on every string that doesn't belong to
+  $L$. $L$ is the *_language, L(M), of $M$_* if $M$ recognizes $L$. $L$ is
   *_Turing-recognizable_* (or just "recognizable") if there exists a Turing
   machine that recognizes $L$.
-- $M$ *_decides L_* if $M$ *_accepts_* every string $omega in L$ and $M$
-  *_rejects_* every string $omega in.not L$. $L$ is *_Turing-decidable_* (or
-  just "decidable") if there exists a Turing machine that recognizes $L$. It
-  follows from these definitions that decidable languages are also
-  recognizable.
+- $M$ *_decides L_* if $M$ *_accepts_* every string that belongs to $L$ and $M$
+  *_rejects_* every string that doesn't belong to $L$. $L$ is
+  *_Turing-decidable_* (or just "decidable") if there exists a Turing machine
+  that recognizes $L$. It follows from these definitions that decidable
+  languages are also recognizable.
 
 Thus a language can be proved to be recognizable or decidable by constructing a
 Turing machine that decides or recognizes that language respectively.
-
-=== Turing Machines That Compute Functions
-
-#let functype = $f : Sigstar1 arrow.r Sigstar2$
-
-Consider the problem of computing a (partial or total) function #functype for
-alphabets #Sigstar1 and #Sigstar2.
-
-A *_one-tape Turing machine that computes a partial or total function_*
-#functype can be modelled as a 7-tuple $M = (Q, Sig1, Sig2, Gamma, delta, q0,
-qhalt)$ where: $Q$ is the *_finite control_* of $M$ (similar to standard Turing
-machines that recognize languages); #Sig1 is the *_input alphabet_* of $M$, is
-_disjoint_ from $Q$, and $blank in.not Sig1$ (similar to the input alphabet of
-standard Turing machines); #Sig2 is the *_output alphabet_*, is possibly
-different from #Sig1, is _disjoint_ from $Q$, and $blank in.not Sig2$; $Gamma$
-is the *_alphabet_* or *_tape alphabet_* of $M$, (similar to the tape alphabet
-of a standard Turing machine), $Sig1 union Sig2 union {blank} subset.eq Gamma$
-and $Gamma$ can contain more other symbols too; $q0 in Q$ is the *_start
-state_*; $qhalt in Q$ is the *_halt state_*; and $delta : (Qnohalt) times Gamma
-arrow.r Q times Gamma times {"L", "R"}$ is the transition function (similar to
-standard Turing machines).
-
-Configurations (including initial configurations) and transitions/moves are the
-same as for standard Turing machines.
-
-If a Turing machine computes a partial function #functype then the following
-properties are satisfied, for every string #arbstring1:
-- If $f$ is defined at $omega$ then, for $M$, $q0 omega tackstar qhalt f(omega)$,
-  i.e. the computation halts with the head at the left and the output written
-  to the tape starting at the leftmost cell
-- If $f$ is undefined at $omega$ then $M$ loops on $omega$
-
-
-A function #functype is *_computable_* if there exists a one-tape Turing
-machine that computes functions, as defined above, with input alphabet #Sig1
-and output alphabet #Sig2 that computes $f$.
 
 === Nondeterministic Turing Machines
 
@@ -307,6 +286,44 @@ other - meaning they recognize and decide the same languages.
 The *_language_* $L$ of a multi-tape Turing machine $M$, as well as whether M
 *_decides_* or *_recognizes_* $L$, is similar to standard Turing machines.
 
+== Computability
+
+=== Turing Machines That Compute Functions
+
+#let functype = $f : Sigstar1 arrow.r Sigstar2$
+
+Consider the problem of computing a (partial or total) function #functype for
+alphabets #Sigstar1 and #Sigstar2.
+
+A *_one-tape Turing machine that computes a partial or total function_*
+#functype can be modelled as a 7-tuple $M = (Q, Sig1, Sig2, Gamma, delta, q0,
+qhalt)$ where: $Q$ is the *_finite control_* of $M$ (similar to standard Turing
+machines that recognize languages); #Sig1 is the *_input alphabet_* of $M$, is
+_disjoint_ from $Q$, and $blank in.not Sig1$ (similar to the input alphabet of
+standard Turing machines); #Sig2 is the *_output alphabet_*, is possibly
+different from #Sig1, is _disjoint_ from $Q$, and $blank in.not Sig2$; $Gamma$
+is the *_alphabet_* or *_tape alphabet_* of $M$, (similar to the tape alphabet
+of a standard Turing machine), $Sig1 union Sig2 union {blank} subset.eq Gamma$
+and $Gamma$ can contain more other symbols too; $q0 in Q$ is the *_start
+state_*; $qhalt in Q$ is the *_halt state_*; and $delta : (Qnohalt) times Gamma
+arrow.r Q times Gamma times {"L", "R"}$ is the transition function (similar to
+standard Turing machines).
+
+Configurations (including initial configurations) and transitions/moves are the
+same as for standard Turing machines.
+
+If a Turing machine computes a partial function #functype then the following
+properties are satisfied, for every string #arbstring1:
+- If $f$ is defined at $omega$ then, for $M$, $q0 omega tackstar qhalt f(omega)$,
+  i.e. the computation halts with the head at the left and the output written
+  to the tape starting at the leftmost cell
+- If $f$ is undefined at $omega$ then $M$ loops on $omega$
+
+
+A function #functype is *_computable_* if there exists a one-tape Turing
+machine that computes functions, as defined above, with input alphabet #Sig1
+and output alphabet #Sig2 that computes $f$.
+
 === Multi-Tape Turing Machines That Compute Functions
 
 Let $k$ be a positive integer. A *_$k$-tape Turing machine that computes a
@@ -350,8 +367,8 @@ Consider only "non-trivial" Turing machines where $q0 != qacc$ and $q0 != qrej$.
 An *_encoding_* of a standard Turing machine #turing is a string over the
 alphabet $SigTM = {s,q,0,1,2,3,4,5,6,7,8,9,L,R,Y,N,(,),"(a literal ',')",;}$.
 
-More generally, encodings are functions that map things to strings e.g. turing
-machines and input strings to input strings of another turing machine.
+More generally, encodings are functions that map things to strings e.g. Turing
+machines and input strings to input strings of another Turing machine.
 
 - $LTM subset.eq SigstarTM$ is the language of encodings of Turing machines.
 - $LTMI subset.eq SigstarTM$ is the language of encodings of Turing machines
@@ -440,6 +457,8 @@ Let #LSig1 and #LSig2, for alphabets #Sig1 and #Sig2:
   *_undecidable_*.
 
 
+==== "Closure-like" Properties
+
 Oracle reductions *_cannot_* be used to prove that languages are unrecognizable
 (i.e. #L2 being recognizeable and $L1 Oreduc L2$ does *_not imply that #L1 is
 recognizable_*).
@@ -454,7 +473,7 @@ fact above that $L$ must also be undecidable.
 Let $NATM subset.eq SigstarTM$ be the language of turing machines $M$ and input
 strings $omega$ for $M$ s.t. $M$ does *_not_* accept $M$:
 - $ATM union NATM = LTMI$ and $ATM inter NATM = emptyset$
-- $ATM Oreduc NATM$ meaning that #NATM is *_undecideable_*.
+- $ATM Oreduc NATM$ meaning that #NATM is *_undecidable_*.
 
 
 === Many-One Reductions
@@ -488,7 +507,7 @@ Common pitfalls include a vague/ambiguous/unreadable definition of $f$, $f$ is
 *_partial_*, forgetting step 3 above, and not including enough detail to show
 that $f$ is computable.
 
-=== Properties
+==== "Closure-like" Properties
 
 Let #Sig1 and #Sig2 be two (possibly identical) alphabets, and let #LSig1 and
 #LSig2 be two languages over these alphabets. If $L1 MOreduc L2$. then the
