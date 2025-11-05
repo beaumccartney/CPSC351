@@ -17,7 +17,7 @@
 )
 
 #set text(
-  size: 7.40pt
+  size: 6.54pt
 )
 
 #let blank = $union.sq$
@@ -62,11 +62,11 @@
 #let LSig3 = $L3 subset.eq Sigstar3$
 
 // TODO:
+// - universal turing machine encoding
 // - how make turing machines that compute functions?
+// - give more concrete set of steps for constructing simulations, perhaps from an example like lecture \#11
 // - how to have a turing machine "call a subroutine" provided by another turing machine?
-// - two-column layout
-// - make explicit that computability requires turing machine that computes
-//   functions to exist and those must halt on all valid inputs
+// - induction proof with turing machines - get the idea down
 // - when describing turing machine for reductions
 //   - num tapes
 //   - what each tape is for
@@ -76,31 +76,35 @@
 //   - simulation steps?
 //   - halting conds
 
-// == Alphabets, Strings, and Languages
-//
-// Definitions:
-// - *Alphabet:* a finite non-empty set. Usually called $Sigma$ here.
-// - *Symbol:* an element of an alphabet.
-// - *String:* a *_string_* over an alphabet $Sigma$ is a finite sequence of symbols in $Sigma$. Strings are *_not_* sets i.e. order matters and duplicates may be present.
-//   - *Length*: the *_length_* of a string $omega$ over an alphabet $Sigma$ (denoted by $abs(omega)$) is the number of symbols in the sequence. The empty string over any alphabet is denoted by $lambda$. All strings have natural length.
-//   - For any alphabet $Sigma$, *#Sigstar* is the set of _all_ strings over $Sigma$.
-// - *String concatenation:* the concatenation of two strings $mu$ and $nu$ is just the $nu$ appended to $mu$, notated as $mu dot nu$. Its length is the sum of the length of the two strings $abs(mu dot nu) = abs(mu) + abs(nu)$.
-// - *Substring:* a string $mu$ is a *_substring_* of $omega$ if $omega = om1 dot mu dot om2$, where $om1, om2, mu in Sigstar$.
-//   - *Prefix:* a string $mu$ is a *_prefix_* of another string $omega$ if there exists some string $nu$ such that $omega = mu dot nu$ (where $mu, nu, omega in Sigstar$).
-//   - *Suffix:* a string $mu$ is a *_suffix_* of another string $omega$ if there exists some string $nu$ such that $omega = nu dot mu$ (where $mu, nu, omega in Sigstar$).
-// - *Language:* a *_language_* over an alphabet $Sigma$ is a subset of #Sigstar.
+== Alphabets, Strings, and Languages
+
+Definitions:
+- *Alphabet:* a finite non-empty set. Usually called $Sigma$ here.
+- *Symbol:* an element of an alphabet.
+- *String:* a *_string_* over an alphabet $Sigma$ is a finite sequence of symbols in $Sigma$. Strings are *_not_* sets i.e. order matters and duplicates may be present.
+  - *Length*: the *_length_* of a string $omega$ over an alphabet $Sigma$ (denoted by $abs(omega)$) is the number of symbols in the sequence. The empty string over any alphabet is denoted by $lambda$. All strings have natural length.
+  - For any alphabet $Sigma$, *#Sigstar* is the set of _all_ strings over $Sigma$.
+- *String concatenation:* the concatenation of two strings $mu$ and $nu$ is just the $nu$ appended to $mu$, notated as $mu dot nu$. Its length is the sum of the length of the two strings $abs(mu dot nu) = abs(mu) + abs(nu)$.
+- *Substring:* a string $mu$ is a *_substring_* of $omega$ if $omega = om1 dot mu dot om2$, where $om1, om2, mu in Sigstar$.
+  - *Prefix:* a string $mu$ is a *_prefix_* of another string $omega$ if there exists some string $nu$ such that $omega = mu dot nu$ (where $mu, nu, omega in Sigstar$).
+  - *Suffix:* a string $mu$ is a *_suffix_* of another string $omega$ if there exists some string $nu$ such that $omega = nu dot mu$ (where $mu, nu, omega in Sigstar$).
+- *Language:* a *_language_* over an alphabet $Sigma$ is a subset of #Sigstar.
 
 == Turing Machines
 
-A *_Turing machine_* is a 7-tuple #turing where $Q$ is the (finite and
-nonempty) set of *_states_* (known as the *_finite control_* of $M$), $Sigma$
-is the (finite and nonempty) *_input alphabet_* (which does *_not_* include the
-*_blank symbol_* "#blank"), $Gamma$ is the (finite and nonempty) *_tape
-alphabet_* such that $Sigma union {blank} subset.eq Gamma$ and $Q inter Gamma =
-emptyset$ (i.e. $Gamma$ includes the alphabet and the blank symbol, but no
-states), $delta : (Qtran) times Gamma arrow.r Q times Gamma times {"L", "R"}$
-is the transition function, $q0 in Q$ is the *_start state_*, $qacc in Q$ is
-the *_accept state_*, and $qrej in Q$ is the *_reject state_.*
+A *_Turing machine_* is a 7-tuple #turing where:
+- $Q$ is the (finite and nonempty) set of *_states_* (known as the *_finite
+  control_* of $M$)
+- $Sigma$ is the (finite and nonempty) *_input alphabet_* such that $Sigma
+  inter Q = emptyset$ and $blank in.not Sigma$
+- $Gamma$ is the (finite and nonempty) *_tape alphabet_* such that $Sigma union
+  {blank} subset.eq Gamma$ and $Q inter Gamma = emptyset$ (i.e. $Gamma$
+  includes the alphabet and the blank symbol, but no states)
+- $delta : (Qtran) times Gamma arrow.r Q times Gamma times {"L", "R"}$ is the
+  transition function
+- $q0 in Q$ is the *_start state_*
+- $qacc in Q$ is the *_accept state_*
+- $qrej in Q without {qacc}$ is the *_reject state_.*
 
 A Turing Machine $M$ accesses and stores on a one-way *_tape_*, consisting of
 an infinite sequence of "cells" that each store a symbol in $Gamma$. $M$ also
@@ -205,9 +209,6 @@ each other - meaning they recognize and decide the same languages.
 
 == Simulations
 
-
-TODO: give a more concrete set of steps, perhaps from an example like lecture \#11
-
 #[
   #set enum(numbering: "(a)")
   #let Mhat = $hat(M)$
@@ -216,11 +217,12 @@ TODO: give a more concrete set of steps, perhaps from an example like lecture \#
 
   To show that a *_second_* model of computation is at least as powerful as a
   *_first_* model of computation:
-  + consider an arbitrary machine $M$ of the *_first_* model of computation
-  + define a machine #Mhat of the *_second_* model of computation that does what $M$ does
-    - describe how a configuration of $M$ is represented when #Mhat is being used
-    - often includes how many tapes, what they're used for, and possibly #Mhat's tape alphabet $hat(Gamma)$
-  + prove that #Mhat solves the same problem as $M$
+  + Consider an arbitrary machine $M$ of the *_first_* model of computation.
+  + Use $M$ to define another machine #Mhat of the *_second_* model of
+    computation (that does what $M$ does)
+    - Describe how a configuration of $M$ is represented when #Mhat is being used
+    - Often includes how many tapes, what they're used for, and possibly #Mhat's tape alphabet $hat(Gamma)$
+  + Prove that #Mhat solves the same problem as $M$
 
   Then describe the following:
   - *_Initialization:_* Let $Sigma$ be the input alphabet for $M$ (and thus for
@@ -251,21 +253,24 @@ TODO: give a more concrete set of steps, perhaps from an example like lecture \#
 For any fixed integer $k >= 1$, a *_$k$-tape Turing Machine_* is a Turing
 machine with $k$ tapes with heads that can move independently, and transitions
 allow left, right, and stay moves. Like the 7-tuple $M = (Q, Sigma, Gamma,
-delta, q0, qacc, qrej)$ where everything is the same as standard Turing machines
-except the transition function has the type $delta : (Qtran) times Gamma^k arrow.r
-Q times (Gamma times {"L","R","S"})^k$.
+delta, q0, qacc, qrej)$ where everything is the same as standard Turing
+machines except the transition function has the type $delta : (Qtran) times
+Gamma^k arrow.r Q times (Gamma times {"L","R","S"})^k$.
 
 === Representing Configurations and Moves
 
-Configurations of a $k$-tape Turing machine $M$ are strings of the form
-*$omega_(1,L) " " q " " omega_(1,R) " " sharp " " omega_(1,L) " " q " "
-omega_(1,R) " " sharp " " dots " " sharp " " omega_(k,L) " " q " "
-omega_(k,R)$* Where $M$ is in state $q$ (meaning $q$ is in $M$'s finite
-control), the symbol $sharp$ does not belong to $Q union Gamma$, $omega_(i, L)$
-is the string of symbols stored to the _left_ of the tape head on the
-$i^("th")$ tape, $omega_(i, R)$ is the string of symbols stored starting at,
-and to the _right_ of the tape head ending with the rightmost non-blank symbol
-on or to the right of the tape head.
+Let $M = (Q, Sigma, Gamma, delta, q0, qacc, qrej)$ be a k-tape Turing machine.
+
+Configurations of $M$ are strings of the form *$omega_(1,L) " " q " "
+omega_(1,R) " " sharp " " omega_(1,L) " " q " " omega_(1,R) " " sharp " " dots
+" " sharp " " omega_(k,L) " " q " " omega_(k,R)$* where:
+- $sharp in.not Q$ and $sharp in.not Gamma$
+- $M$ is in state $q$ (meaning $q in Q$)
+- $omega_(i, L)$ is the string of symbols stored to the _left_ of the tape head
+  on the $i^("th")$ tape
+- $omega_(i, R)$ is the string of symbols stored starting at, and to the
+  _right_ of the tape head ending with the rightmost non-blank symbol on or to
+  the right of the tape head.
 
 === Processing Strings
 
@@ -297,17 +302,20 @@ alphabets #Sigstar1 and #Sigstar2.
 
 A *_one-tape Turing machine that computes a partial or total function_*
 #functype can be modelled as a 7-tuple $M = (Q, Sig1, Sig2, Gamma, delta, q0,
-qhalt)$ where: $Q$ is the *_finite control_* of $M$ (similar to standard Turing
-machines that recognize languages); #Sig1 is the *_input alphabet_* of $M$, is
-_disjoint_ from $Q$, and $blank in.not Sig1$ (similar to the input alphabet of
-standard Turing machines); #Sig2 is the *_output alphabet_*, is possibly
-different from #Sig1, is _disjoint_ from $Q$, and $blank in.not Sig2$; $Gamma$
-is the *_alphabet_* or *_tape alphabet_* of $M$, (similar to the tape alphabet
-of a standard Turing machine), $Sig1 union Sig2 union {blank} subset.eq Gamma$
-and $Gamma$ can contain more other symbols too; $q0 in Q$ is the *_start
-state_*; $qhalt in Q$ is the *_halt state_*; and $delta : (Qnohalt) times Gamma
-arrow.r Q times Gamma times {"L", "R"}$ is the transition function (similar to
-standard Turing machines).
+qhalt)$ where:
+- $Q$ is the *_finite control_* of $M$ (similar to standard Turing machines
+  that recognize languages)
+- #Sig1 is the *_input alphabet_* of $M$, is _disjoint_ from $Q$, and $blank
+  in.not Sig1$ (similar to the input alphabet of standard Turing machines)
+- #Sig2 is the *_output alphabet_*, is possibly different from #Sig1, is
+  _disjoint_ from $Q$, and $blank in.not Sig2$
+- $Gamma$ is the *_alphabet_* or *_tape alphabet_* of $M$, (similar to the tape
+  alphabet of a standard Turing machine), $Sig1 union Sig2 union {blank}
+  subset.eq Gamma$ and $Gamma$ can contain more other symbols too
+- $q0 in Q$ is the *_start state_*
+- $qhalt in Q$ is the *_halt state_*
+- $delta : (Qnohalt) times Gamma arrow.r Q times Gamma times {"L", "R"}$ is
+  the transition function (similar to standard Turing machines).
 
 Configurations (including initial configurations) and transitions/moves are the
 same as for standard Turing machines.
@@ -390,11 +398,11 @@ machines and input strings to input strings of another Turing machine.
   - #MUTM *_rejects_* $mu$ *_if and only if_* $M$ *_rejects_* $omega$
   - #MUTM *_loops_* on $mu$ *_if and only if_* $M$ *_loops_* on $omega$
 
-  // #MUTM begins by checking its input string #arbstringTM belongs to #LTMI,
-  // *_rejecting_* $mu$ if $mu in.not LTMI$. If $mu in LTMI$, $mu$ is an encoding
-  // of some (standard) Turing machine $M = (Q, Sigma, Gamma, delta, q0, qacc,
-  // qrej)$ and an input string #arbstring. #MUTM continues by *_simulating_*
-  // execution of $M$ on $omega$.
+  #MUTM begins by checking its input string #arbstringTM belongs to #LTMI,
+  *_rejecting_* $mu$ if $mu in.not LTMI$. If $mu in LTMI$, $mu$ is an encoding
+  of some (standard) Turing machine $M = (Q, Sigma, Gamma, delta, q0, qacc,
+  qrej)$ and an input string #arbstring. #MUTM continues by *_simulating_*
+  execution of $M$ on $omega$.
 
 
   $ATM subset.eq LTMI$ is the language of encodings of Turing machines #turing
@@ -441,7 +449,7 @@ To describe an oracle reduction from a language #LSig1 to a language #LSig2:
   an algorithm that decides #L2, just assume one exists and is correct_.
 + If not obvious, _prove the correctness_ of the algorithm that decides
   membership in #L1, assuming the correctness of the algorithm that decides
-  membership in #L2.
+  membership in #L2. Often a proof by induction.
 + Adding more detail (only) as needed, show that _if there exists_ a multi-tape
   Turing machine $M_2$ that decides membership in #L2, then this can be used as
   a component in a multi-tape Turing machine $M_1$ that would decide membership
@@ -463,14 +471,14 @@ Oracle reductions *_cannot_* be used to prove that languages are unrecognizable
 (i.e. #L2 being recognizeable and $L1 Oreduc L2$ does *_not imply that #L1 is
 recognizable_*).
 
-TODO: add choosing L hat such that its undecidable\
+// TODO: add choosing L hat such that its undecidable\
 To prove that a language $L$ is *_undecidable_*, prove that some undecidable
 language $hat(L)$ is *_oracle reducible_* to $L$, then conclude by the second
 fact above that $L$ must also be undecidable.
 
 #let NATM = $italic("NA")_"TM"$
 
-Let $NATM subset.eq SigstarTM$ be the language of turing machines $M$ and input
+Let $NATM subset.eq SigstarTM$ be the language of Turing machines $M$ and input
 strings $omega$ for $M$ s.t. $M$ does *_not_* accept $M$:
 - $ATM union NATM = LTMI$ and $ATM inter NATM = emptyset$
 - $ATM Oreduc NATM$ meaning that #NATM is *_undecidable_*.
@@ -495,13 +503,15 @@ as defined above.
 NOTE: define functions, not algorithms i.e. piecewise not pseudocode.
 
 Steps prove that a language #LSig1 is many-one reducible to a language #LSig2:
-+ (clearly and precisely) describe the *_total_* function #MOreducfunc that
-  will be shown to be a many-one reduction. Show that $f$ is total.
-+ *_prove_* that if $omega in L1$ then $f(omega) in L2$ for every string #arbstring1
-+ *_prove_* that if $omega in.not L1$ then $f(omega) in.not L2$ for every string #arbstring1
-+ *_sketch a proof_* that $f$ is computable, including enough detail for it to
-  be reasonably clear that you really _could_ write a python or java program
-  that computes this function from strings to strings
++ Clearly and precisely describe the *_total_* function #MOreducfunc that will
+  be shown to be a many-one reduction. Show that $f$ is total.
+  + *_Prove_* that if $omega in L1$ then $f(omega) in L2$ for every string
+  #arbstring1.
+  + *_Prove_* that if $omega in.not L1$ then $f(omega) in.not L2$ for every
+  string #arbstring1.
+  + *_Sketch a proof_* that $f$ is computable, including enough detail for it
+  to be reasonably clear that you really _could_ write a python or java program
+  that computes this function from strings to strings.
 
 Common pitfalls include a vague/ambiguous/unreadable definition of $f$, $f$ is
 *_partial_*, forgetting step 3 above, and not including enough detail to show
@@ -528,63 +538,77 @@ To prove that a language $L$ is *_unrecognizable_*, prove that some
 *_unrecognizable_* language $hat(L)$ is *_many-one reducible_* to $L$, then
 conclude by the third fact above that $L$ must also be unrecognizable.
 
-// === Decision Problems
-//
-// A *_decision problem_* is a computational problem that asks a question with a
-// "Yes/No" (think boolean) answer. An *_instance_* is an input to a decision
-// problem.
-//
-// When an _alphabet_ $Sigma$ and an _encoding_ (a mapping of instances to strings in #Sigstar) is chosen, _three languages_ are associated with the problem:
-// - _Language of Instances:_ the set of strings in #Sigstar that are valid encodings of an instance of the problem. Partitioned by lang Yes-Insances and lang No-Instances
-// - _Language of Yes-Instances:_ the subset of lang Instances for which the answer to the decision problem is "Yes"
-// - _Language of No-Instances:_ the subset of lang Instances for which the answer to the decision problem is "No"
-//
-// The "usual situation" for this class:
-// - every instance of the decision problem is encoded by some string in #Sigstar, and every encoding encodes *_exactly one instance_*
-// - we're interested in decision problems whose languages of instances are *_decidable_*
-// - the phrase "reducing one decision problem to another" means we are giving a
-//   *_many-one reduction_* from the *_langauge of Yes-instances for the first
-//   decision problem_* to the *_language of Yes-instances of the second decision
-//   problem_*.
-//
-// #let e1 = $e_1$
-// #let e2 = $e_2$
-//
-// #let LI1 = $L_(I_1)$
-// #let LI2 = $L_(I_2)$
-//
-// #let mujunk = $mu_"Junk"$
-//
-// Steps for Reductions with decision problems for the "usual situation" above:
-// + describe a mapping $phi$ from instances of the first problem to instances of
-//   the second problem
-// + show that the mapping $phi$ maps each Yes-instance of the first problem to a
-//   Yes-instance of the second problem, and that $phi$ maps each No-instance of
-//   the first problem to a No-instance of the second problem
-// + consider encoding schemes: one, #e1, maps instances of the first problem to
-//   strings over an alphabet #Sig1, and another, #e2, maps instances of hte
-//   second problem to strings over an alphabet #Sig2. Will generally be given.
-// + Let $LI1 subset.eq #Sigstar1$ be the language of encodings of instances of
-//   the firsxt problem, and let $LI2 subset.eq #Sigstar2$ be the language of
-//   encodings of instances of the second problem.
-// + Confirm the *_Usual Situation:_* Prove (often, by stating a previously
-//   established result) that #LI1 is decidable, and confirm that $LI2 !=
-//   Sigstar2$ so that there exists a string $mujunk in Sigstar2$ such that
-//   $mujunk in.not LI2$. *_Say, clearly, what string #mujunk you are going to
-//   use._*
-// + Let #functype be defined as follows for every string $mu in Sigstar1$:
-//   - if $mu in LI1$ so that $mu$ is the encoding of some instance, $alpha$, of the first problem, then $f(mu)$ is the encoding of the corresponence instance $f(alpha)$ of the second problem where $phi$ is the mapping from instances of the first problem to instances of the second problem, chosen at the beginning of this process.
-//   - if $mu in.not LI1$ then $f(mu) = mujunk$
-//   NOTE: completing the steps above ensures that $omega in L1$ *_if and only if_* $f(omega) in L2$ for everystring #arbstring1.
-// + give an algorithm to compute the function $f$ and prove that it is correct
-//   - often advisable to start at the high lievel, using the mapping $phi$ and the encoding schemes for problems, to give an algorithm to compute $f$ that can be described using pseudocode.
-//   - details can be added, as needed, to confirm that there is a multi-tape Turing machine that computes the function $f$ as well
+=== Decision Problems
 
-// == Church Turing Thesis
-//
-// Many abstract models of computation have been proposed, and shown to be
-// equivalent to Turing machines with *_simulations_* - its widely believed that
-// Turing machines are the "most powerful possible" computers.
+A *_decision problem_* is a computational problem that asks a question with a
+"Yes/No" (think boolean) answer. An *_instance_* is an input to a decision
+problem.
+
+When an _alphabet_ $Sigma$ and an _encoding_ (a mapping of instances to strings
+in #Sigstar) is chosen, _three languages_ are associated with the problem:
+- _Language of Instances:_ the set of strings in #Sigstar that are valid
+  encodings of an instance of the problem. Partitioned by lang Yes-Insances and
+  lang No-Instances
+- _Language of Yes-Instances:_ the subset of lang Instances for which the
+  answer to the decision problem is "Yes"
+- _Language of No-Instances:_ the subset of lang Instances for which the answer
+  to the decision problem is "No"
+
+The "usual situation" for this class:
+- Every instance of the decision problem is encoded by some string in #Sigstar,
+  and every encoding encodes *_exactly one instance_*.
+- We're interested in decision problems whose languages of instances are
+  *_decidable_*.
+- The phrase "reducing one decision problem to another" means we are giving a
+  *_many-one reduction_* from the *_language of Yes-instances for the first
+  decision problem_* to the *_language of Yes-instances of the second decision
+  problem_*.
+
+#let e1 = $e_1$
+#let e2 = $e_2$
+
+#let LI1 = $L_(I_1)$
+#let LI2 = $L_(I_2)$
+
+#let mujunk = $mu_"Junk"$
+
+Steps for Reductions with decision problems for the "usual situation" above:
++ Describe a mapping $phi$ from instances of the first problem to instances of
+  the second problem.
++ Show that the mapping $phi$ maps each Yes-instance of the first problem to a
+  Yes-instance of the second problem, and that $phi$ maps each No-instance of
+  the first problem to a No-instance of the second problem.
++ Consider encoding schemes: one, #e1, maps instances of the first problem to
+  strings over an alphabet #Sig1, and another, #e2, maps instances of the
+  second problem to strings over an alphabet #Sig2. Will generally be given.
++ Let $LI1 subset.eq #Sigstar1$ be the language of encodings of instances of
+  the first problem, and let $LI2 subset.eq #Sigstar2$ be the language of
+  encodings of instances of the second problem.
++ Confirm the *_Usual Situation:_* Prove (often, by stating a previously
+  established result) that #LI1 is decidable, and confirm that $LI2 !=
+  Sigstar2$ so that there exists a string $mujunk in Sigstar2$ such that
+  $mujunk in.not LI2$. *_Say, clearly, what string #mujunk you are going to
+  use._*
++ Let #functype be defined as follows for every string $mu in Sigstar1$:
+  - If $mu in LI1$ so that $mu$ is the encoding of some instance, $alpha$, of
+    the first problem, then $f(mu)$ is the encoding of the corresponence
+    instance $f(alpha)$ of the second problem where $phi$ is the mapping from
+    instances of the first problem to instances of the second problem, chosen
+    at the beginning of this process.
+  - If $mu in.not LI1$ then $f(mu) = mujunk$
+  NOTE: completing the steps above ensures that $omega in L1$ *_if and only if_* $f(omega) in L2$ for every string #arbstring1.
++ Give an algorithm to compute the function $f$ and prove that it is correct
+  - Often advisable to start at the high level, using the mapping $phi$ and
+    the encoding schemes for problems, to give an algorithm to compute $f$ that
+    can be described using pseudocode.
+  - Details can be added, as needed, to confirm that there is a multi-tape
+    Turing machine that computes the function $f$ as well
+
+== Church Turing Thesis
+
+Many abstract models of computation have been proposed, and shown to be
+equivalent to Turing machines with *_simulations_* - its widely believed that
+Turing machines are the "most powerful possible" computers.
 
 == Induction on the length of a string
 
@@ -601,13 +625,19 @@ Standard induction steps:
 + conclude that since base and inductive steps, thing you're proving is true for all $n >= n_o$ (INCLUDE THE FOLLOWING) *_by induction_*.
 
 For induction on the length of a string:
-- state that every string #arbstring has a length $abs(omega) in NN$. Can call the length $n$.
-- state induction on the length of the string $omega$
-  - state standard or strong form of induction
-- base case is $abs(omega) = 0$, which implies that $omega = lambda$ (since $lambda$ is the only member of #Sigstar with length 0)
-- inductive step is every string #arbstring with length $abs(omega) = k + 1$ has property $P(k)$.
-  - show that $omega$ isn't empty, and in particular $omega = mu dot sigma$ for some $mu in Sigstar$ and $sigma in Sigma$
-- proof should end with a conclusion e.g. "It now follows, by induction on length of the string $omega$, that every string #arbstring \<has desired property\>"
++ State that every string #arbstring has a length $abs(omega) in NN$. Can call
+  the length $n$.
++ State induction on the length of the string $omega$.
+  - State standard or strong form of induction.
++ Base case is $abs(omega) = 0$, which implies that $omega = lambda$ (since
+  $lambda$ is the only member of #Sigstar with length 0).
++ Inductive step is every string #arbstring with length $abs(omega) = k + 1$
+  has property $P(k)$.
+  - Show that $omega$ isn't empty, and in particular $omega = mu dot sigma$ for
+    some $mu in Sigstar$ and $sigma in Sigma$.
++ Proof should end with a conclusion e.g. "It now follows, by induction on
+  length of the string $omega$, that every string #arbstring \<has desired
+  property\>".
 
 == Misc notes:
 
