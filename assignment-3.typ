@@ -15,6 +15,8 @@
 #let var(x) = $"var"(#x)$
 
 #let Bhat = $hat(B)$
+#let hsigma = $hat(sigma)$
+#let hB = $hat(B)$
 
 #title()
 
@@ -227,5 +229,182 @@ P((and.big_(i in S_K)(K_i = a_i)) and (and.big_(j in S_Bhat)(Bhat_j = b_j)) ) = 
 $
 
 
-In the assignment document, we are told explicitly that Ken and Barbie's shot's
-are mutually independent.
+// In the assignment document, we are told explicitly that Ken and Barbie's shot's are mutually independent.
+
+We can confirm that the random variables listed above are mutually independent, since the sample space, $Omega$, is built from independent coordinate trials; where each outcome is a list of independent results. ( $K_1, K_2, dots, K_(2n), Bhat_1, Bhat_2, dots, Bhat_n$) Due to this fact the probability of any outcome is the product of the probabilities of each given attempt. In each random variable given, $B_(n)$ is only dependent on the $n^"th"$ attempt taken by Barbie , and $K_(2n)$ is only dependent on the $(2n)^"th"$ attempt taken by ken. Since any of these events are independent and the probability of any combination of them factors into a product, any combination of $K_1, K_2, dots, K_(2n), Bhat_1 $ and $ Bhat_2, dots, Bhat_n$ also has a probability that factors into a product. Satisfying the definition of what it means for random variables to be mutually independent.
+
+= Question 3
+
+== 3 (a)
+To solve this problem we will be using the Theorem introduced in lecture 21
+that states the following:
+
+Let $Omega$ be a finite sample space with probability distribution $P : Omega
+-> RR $ and let $X_1, X_2, ... X_n : Omega -> RR$ be random variables (for some
+positive integer $n$). If $X_1, X_2, ... X_n$ are pairwise independent then $
+var( X_1 + X_2 + ... + X_n) = var(X_1) + var(X_2) + ... + var(X_n). $
+
+Since we know that the variables are mutually independent this also means that
+they are pairwise independent, so we can use the theorem given above.
+
+As stated in the document given,
+
+
+
+$W : Omega -> RR $ such that, for every outcome $hsigma in Omega$  as shown at
+line (2),
+
+$ W(hsigma) = K_1(hsigma) + K_2(hsigma) + ... + K_(2n)(hsigma) + hB_1(hsigma) +
+hB_2(hsigma) + ... + hB_n (hsigma) $
+
+So to solve for $var(W)$,  using theorem stated above:
+
+$ var(W) = var(K_1(hsigma)) + var(K_2(hsigma)) + ... + var(K_(2n)h(sigma)) +
+var(hB_1(sigma)) + var(hB_2(hsigma)) + ... + var(hB_n (hsigma))  $
+
+Which can be simplified to:
+
+$ var(W) =  sum_(i=1)^(2n)(var(K_i)) + sum_(j=1)^n (var(hB_j)) $
+
+Where $i$ and $j$ are both integers in the range $1 <= i <= 2n$ and $1 <= j <=
+n$ respectively. In 1 (b), we established that for integers $i$ where $1 <= i
+<= 2n$ (that is, the above bound on $i$), $"var"(K_i) = 2/9.$ In 1 (d), we
+established that for integers $j$ where $1 <= j <= n$ (that is, the above bound
+on $j$), $"var"(Bhat_j) = 3/16.$ Substituting into $"var"(W)$, we have:
+
+$
+var(W) &=  sum_(i=1)^(2n)(var(K_i)) + sum_(j=1)^n (var(hB_j))\
+var(W) &= 2n times 2/9 + n times 3/16 \
+var(W) &= (91n)/144
+$
+
+== 3 (b)
+
+To solve this problem we will be using the Theorem introduced in lecture 21
+that states the following:
+
+Let $Omega$ be a finite sample space, let $P : Omega -> RR$ be a probability
+distribution for $Omega$, and let $X$ be a random variable. Then $X^2$ is also
+a random variable, and
+
+$ var(X) = Ex[X^2] - Ex[X]^2 $
+
+Adding $Ex[X]^2$ to both sides, we have
+
+// For our purposes, we will be using simple algebra to rearrange this theorem, to
+// solve for $Ex[X^2]$, which will make it the following:
+
+$ Ex[X^2] = var(X) + Ex[X]^2. $
+
+From previous answers we know that: $var(W) =  (91n)/144$ and $Ex[W] =
+(11n)/12$. Applying these to the above equation, we have:
+$
+Ex[W^2] &= var(W) + Ex[W]^2                   \
+Ex[W^2] &= (91n)/144 + ((11n)/12)^2           \
+Ex[W^2] &= (91n)/144 + (121n^2)/144           \
+Ex[W^2] &= (91n + 121n^2)/144                 \
+Ex[W^2] &= (121n^2 + 91n)/144
+$
+
+= Question 4
+
+Let $alphaar in Omega$ be an arbitrary outcome. Suppose that Barbie and Ken
+take more than zero shots. That is, $n > 0$.
+
+To proceed, it is necessary to find $abs(W)$. Recall the definition of $W$: $
+W(alphaar) = K_(1)(alphaar) + K_(2)(alphaar) + dots + K_(2n)(alphaar) + Bhat_(1)(alphaar) +  Bhat_(2)(alphaar) + dots + Bhat_(n)(alphaar)
+$
+
+Since $n$ is finite, there are a finite number of summands in $W$.
+Additionally, we know from the definitions of $K_i$ and $Bhat_i$ that they both
+have range ${0, 1}$. That is, every element of the range is *_not_* negative.
+Thus $W$ is a finite sum of non-negative integers, and so $W(alphaar) >= 0$, for
+every $alphaar in Omega$. This implies that $abs(W(alphaar)) = W(alphaar)$, for
+every outcome $alphaar in Omega$ and so $abs(W) = W$.
+
+== 4 (a)
+
+Since $Omega$ is finite and $n > 0$, we can apply Markov's inequality to bound
+the probability that $W >= n$.
+
+$
+#intertext[Starting with the definition of Markov's inequality, applied to $W$ and $n$:]
+P(abs(W) >= n) &<= Ex[abs(W)]/n \
+#intertext[Applying $abs(W) = W$:]
+P(W >= n) &<= Ex[W]/n           \
+#intertext[We've already established that $Ex[W] = (11n)/12$. Subbing in:]
+P(W >= n) &<= ((11n)/12) times 1/n      \
+P(W >= n) &<= 11/12
+$
+
+== 4 (b)
+
+Since $Omega$ is finite and $n > 0$, we can apply Chebychev's Inequality to
+bound the probability that $W >= n$.
+
+$
+#intertext[Starting with the definition of Chebychev's inequality, applied to $W$ and $n$:]
+P(abs(W) >= n) &<= Ex[W^2]/n^2                      \
+#intertext[Applying $abs(W) = W$:]
+P(W >= n) &<= Ex[W^2]/n^2                           \
+#intertext[We've already established that $Ex[W^2] = $. Subbing in:]
+P(W >= n) &<= ((121n^2 + 91n)/144) times 1/n^2      \
+P(W >= n) &<= 121/144 + 91/(144n)
+$
+
+== 4 (c)
+
+Since $Omega$ is finite and $n > 0$, we can apply Cantelli's Inequality to bound
+the probability that $W >= n$.
+
+$
+#intertext[First, we need to turn our probability into the form used in
+Cantelli's inequality. We begin by subtracting $Ex[W]$ from both sides of $W >=
+n$: ]
+P(W >= n) &= P(W - Ex[W] >= n - Ex[W])   \
+          &= P(W - Ex[W] >= n - (11n)/12)\
+          &= P(W - Ex[W] >= n/12)        \
+$
+$
+#intertext[We can now apply Cantelli's inequality to bound this probability:]
+P(W - Ex[W] >= n/12) &<= var(W)/((n/12)^2 + var(W))\
+#intertext[We've already established that $var(W) = (91n)/144$. Substituting into the above equation:]
+P(W - Ex[W] >= n/12) &<= ((91n)/144)/(n^2/144 + (91n)/144)\
+#intertext[Multiplying the numerator and the denominator by $144/n$, we have:]
+P(W - Ex[W] >= n/12) &<= 91/(n + 91)\
+#intertext[Since $P(W - Ex[W] >= n/12) = P(W >= n)$, we have:]
+P(W >= n) <= 91/(n + 91)
+$
+
+// (a)* Markov's Inequality:* Since $Ex[W] = (11n)/12 $ and W is a non-negative random variable( that is, $W(mu)>= 0 $ for all $mu in Omega $, so that $W=|W|$), Markov's Inequality implies that $  P(W>=n) &= P(|W|>=n) $
+// $        &<= (Ex[|W|])/n $
+//   $      &= ((11n)/12)/n $
+//   $       &= 11/12 $
+//
+// (b) *Chebyshev's Inequality:* In order to apply this, we need $Ex[W^2]$, which we calculated above as
+// $Ex[W^2] = (91n + 121n^2)/144 $
+// It follows by Chebyshev's Inequality that:
+// $ P(W >= n) &= P( |W| >= n) $$ <= (Ex[W^2])/n^2 $
+// $          &= ((91n + 121n^2)/144)/(n^2)       $
+// $          &= (91 + 121n)/(144n) $
+//
+// (c) *Cantelli's Inequality:* Since $Ex[W] = (11n)/12, W >= n $ iff $W - Ex[W] >= n - (11n)/(12)$
+//   $&= n/12 $
+//
+//   It follows by Cantelli's Inequality that:
+//
+//   $ P(W >= n) &= P( W - Ex[W] >= (n)/(12) ) $
+//             $  & <= (var(W))/((n/12)^2 + var(W)) $
+//             $ &=  (91n"/"144)/((n^2"/"144)+(91n"/"144)) $
+//             $ &= 91/( 91+ n) $
+//   We can also notice that this limit approaches zero as _n_ approaches infinity, so that this is a much better bound than the others that have been obtained when _n_ is large.
+
+= Question 5
+
+// I think this is to be done by chernoff bound, but I'm still figuring out how to do that- Sargun
+We want to find P(W>n). W>n can happen only if at east one of these holds for some $lambda$ such that $0<= lambda<= 1$:
+ - K1(~α) + K2(~α) + · · · + K2n(~α) > 2/3n + δ/12n .
+ -  ̂B1(~α) + ̂ B2(~α) + · · · + ̂ Bn(~α) > 1/4n + (1−δ)/12n
+// applying chernoff to eq1 and then to eq2 and then a union of them?
+
+= Question 6
