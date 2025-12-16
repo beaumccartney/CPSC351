@@ -1,7 +1,27 @@
+// TODO:
+//  mark everywhere where the sample space being finite matters (tail bounds, etc.)
+
 #set document(
   author: "Beau McCartney",
   title:  "CPSC 351 Final Exam Info Sheet",
 )
+
+#set page(
+  paper: "us-letter",
+  margin: 0.25cm,
+  columns: 2,
+)
+#set columns(
+  gutter: 10pt,
+)
+
+#set par(
+  justify: true,
+)
+
+// #set text(
+//   size: 6.54pt
+// )
 
 = Discrete Probability
 
