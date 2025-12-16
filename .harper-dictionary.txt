@@ -1,3 +1,5 @@
 CPSC
+Kleene
+iff
 powerset
 reducibility
