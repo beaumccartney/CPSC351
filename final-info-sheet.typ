@@ -3,7 +3,7 @@
   title:  "CPSC 351 Final Exam Info Sheet",
 )
 
-== Discrete Probability
+= Discrete Probability
 
 #let Pd = $upright(P)$
 #let PB = $upright(P)_B$
@@ -15,7 +15,7 @@ Let $Omega$ be some set.
 - #powom is the powerset of some set $Omega$.
 - If $Omega$ is finite, $abs(powom) = 2^abs(Omega)$
 
-=== Experiments, Sample Spaces, and Events
+== Experiments, Sample Spaces, and Events
 
 - *Experiment:* a procedure that yields one of a given set of possible
   *_outcomes._*
@@ -28,7 +28,7 @@ Let $Omega$ be some set.
   - For the sample space $Omega$ of some experiment, $powom$ is *_the set of
     all events _* for that experiment.
 
-=== Probability Distributions
+== Probability Distributions
 
 Consider an experiment with a sample space $Omega$.
 
@@ -50,7 +50,7 @@ $
 Pd(A) = sum_(x in A) Pd(x) = sum_(x in A) 1 / abs(Omega) = abs(A) / abs(Omega).
 $
 
-=== Complement and Union of Events
+== Complement and Union of Events
 
 Let $Omega$ be the sample space of some experiment, and $A, B subset.eq Omega$ be
 events in that sample space.
@@ -62,7 +62,7 @@ events in that sample space.
   and $E_1, E_2, dots, E_k subset.eq Omega$. Then $ Pd(E_1 union E_2 union dots union E_k) <= sum_(i = 1)^k Pd(E_i). $
 
 
-=== Conditional Probability
+== Conditional Probability
 
 Let $Omega$ be a sample space, $Pd : Omega arrow.r RR$ be a probability
 distribution over $Omega$, and $A, B subset.eq Omega$ be events such that
@@ -103,7 +103,7 @@ PB(x) = Pd({x}|B)
       )
 $
 
-=== Independence
+== Independence
 
 Events $A$ and $B$ are said to be *_independent_* if $Pd(A inter B) = Pd(A)
 times Pd(B)$. The notion of independence can be generalized for events $A_1,
@@ -115,7 +115,7 @@ A_2, dots, A_k$ (where $k >= 2$) in two ways.
   - Note that mutual independence implies pairwise independence.
   - Checking mutual independence constitutes checking the above product for every larger-than-two subset of the indices.
 
-=== Random Variables
+== Random Variables
 
 Let $Omega$ be a sample space.
 - A *_random variable over $Omega$_* is a (total) function $X : Omega arrow.r RR$.
@@ -162,7 +162,7 @@ arrow.r RR$ be random variables.
   X(sigma) + b. $
 
 Linearity of expectation:
-- $Ex[X_1 + X_2 + dots + X_n] = sum_(i = 1)^n X_i (sigma)$
+- $Ex[X_1 + X_2 + dots + X_n] = Ex[X_1] + Ex[X_2] + dots + Ex[X_n]$
 - $Ex[a dot X + b] = a dot Ex[X] + b$
 - It is *_not_* generally true that $Ex[X_1 times X_2] = Ex[X_1] times Ex[X_2]$
 
@@ -209,22 +209,50 @@ Basic inequality: $ forall a in RR, a > 0 arrow Pd(h(X) >= a) <= Ex[h(X)]/a $
 Markov's Inequality: $ forall a in RR, a > 0 arrow Pd(abs(X) >= a) <= Ex[abs(X)]/a $
 
 The *_variance_ of $X$, with respect to $P$* is $ "var"(X) = sum_(mu in Omega)
-(X(mu) - Ex[X])^2 times Pd(mu). $ If the sample space is finite, then $"var"(X)
-= Ex[X^2] - Ex[X]^2$, where $X^2$ is the random variable such that $forall
-sigma in Omega, X^2(sigma) = (X(sigma))^2$.
+(X(mu) - Ex[X])^2 times Pd(mu). $
+
+If the sample space $Omega$ is finite, then the following conditions hold:
+- $"var"(X) = Ex[X^2] - Ex[X]^2$, where $X^2$ is the random variable such that
+  $forall sigma in Omega, X^2(sigma) = (X(sigma))^2$.
+- Let $n in NN$, and $X_1, X_2, dots, X_n$ be random variables. If $X_1, X_2,
+  dots, X_n$ are *_pairwise independent_* then $ "var"(X_1 + X_2 + dots + X_n)
+  = sum_(i = 1)^n "var"(X_i). $
 
 The *_standard deviation_ of $X$*, denoted $sigma(X)$, is $sqrt("var"(X))$.
 
-Let $n in NN$, and $X_1, X_2, dots, X_n$ be random variables. If $X_1, X_2,
-dots, X_n$ are *_pairwise independent_* then $ "var"(X_1 + X_2 + dots + X_n) =
-sum_(i = 0)^n "var"(X_i). $
 
 Chebyshev's Inequality: Let $a in RR$ s.t. $a > 0$. Then $ Pd(abs(X) >= a) <= Ex[X^2]/a^2. $
 
 Cantelli's Inequality: Let $a in RR$ s.t. $a > 0$. Then $ Pd(X - Ex[X] >= a) <= "var"(X)/(a^2 + "var"(X)). $
 
-Chernoof Bound: Suppose that $X_1, X_2, dots, X_n$ (for some $n in NN$) are
-mutually independent indicator (that is, range ${0, 1}$) random variables such
-that $exists p in RR,
-0 <= Pd(X = 1) = p <= 1$. Let $X_Sigma = sum_(i = 1)^n X_i$. Then, $ forall
-  theta in [0, 1], P(X >= (1 + theta) p n) <= e^(-theta^2/3 p n). $
+Chernoff Bound: Suppose $X_1, X_2, dots, X_n$ (for some $n in NN$) are
+mutually independent indicator random variables (that is, range ${0, 1}$) such
+that
+$
+exists p in [0,1] subset.eq RR "s.t." forall X in {X_1, X_2, dots, X_n}, Pd(X =
+1) = p
+$
+
+Let $X_Sigma = X_1 + X_2 + dots + X_n$. Then, $ forall theta in [0, 1]
+subset.eq RR, Pd(X_Sigma >= (1 + theta) p n) <= e^(-theta^2/3 p n). $
+
+== Algorithm Analysis
+
+Consider a deterministic algorithm that solves a given computational problem. Let $n in NN.$
+- A *_sample space_* consists of instances of this problem of size $n$, or
+  *_sets_* of these inputs where for any given set all the inputs in that set
+  result in the same trace of execution of the algorithm.
+- A *_probability distribution_* is formed, to model assumptions about the
+  _likelyhook_ of the (types of) inputs in the sample space
+
+A *_Randomized algorithm_* uses random number generators during execution
+#sym.dash.em so that the output
+
+*Big idea:* average running time of a variable is
+
+
+A *_Las Vegas_* algorithm for a decision problem is a randomized algorithm that
+can never give a wrong answer.
+
+A *_Monte Carlo_* algorithm for a decision problem is a randomized algorithm can
+can fail but the probability of failing is small.
