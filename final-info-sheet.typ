@@ -868,7 +868,7 @@ events in that sample space.
 - The *_complement_* of $A$, $overline(A)$ is the set of outcomes _not_ in $A$
   i.e. $overline(A) = {x in Omega | x in.not A}$. In particular,
   $Pd(overline(A)) = 1 - Pd(A)$
-- $Pd(A union B) = Pd(A) + Pd(b) - Pd(A inter B)$. This implies $Pd(A union B) <= Pd(A) + Pd(b)$.
+- $Pd(A union B) = Pd(A) + Pd(B) - Pd(A inter B)$. This implies $Pd(A union B) <= Pd(A) + Pd(B)$.
 - The above point can be generalized to more than two events. Suppose $k in NN$,
   and $E_1, E_2, dots, E_k subset.eq Omega$. Then $ Pd(E_1 union E_2 union dots union E_k) <= sum_(i = 1)^k Pd(E_i). $
 
