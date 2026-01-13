@@ -17,8 +17,15 @@
 #let Bhat = $hat(B)$
 #let hsigma = $hat(sigma)$
 #let hB = $hat(B)$
-
-#title()
+#let pn = $p$+$n$
+#let pW = $P(W > n) $
+#let cD = $ P(W > n) lt.eq P(K > 2/3n + delta/12n) + P(B > 1/4n + (1-delta)/12n) $
+#let c1 = $P(K > 2/3n + delta/12n)$
+#let c2 = $P(B > 1/4n + (1-delta)/12n)$
+#let ck = $P(C_k)$
+#let cb = $P(C_b)$
+#let e1 = $e^(-(delta^2 n)/288)$
+#let e2 = $e^(-((1-delta)^2n)/108) $
 
 *Group:* 16\
 *Members:* Beau McCartney (30095634), Sargun Kaur (30268472), Luis Hernandez (30241559)
@@ -231,7 +238,18 @@ $
 
 // In the assignment document, we are told explicitly that Ken and Barbie's shot's are mutually independent.
 
-We can confirm that the random variables listed above are mutually independent, since the sample space, $Omega$, is built from independent coordinate trials; where each outcome is a list of independent results. ( $K_1, K_2, dots, K_(2n), Bhat_1, Bhat_2, dots, Bhat_n$) Due to this fact the probability of any outcome is the product of the probabilities of each given attempt. In each random variable given, $B_(n)$ is only dependent on the $n^"th"$ attempt taken by Barbie , and $K_(2n)$ is only dependent on the $(2n)^"th"$ attempt taken by ken. Since any of these events are independent and the probability of any combination of them factors into a product, any combination of $K_1, K_2, dots, K_(2n), Bhat_1 $ and $ Bhat_2, dots, Bhat_n$ also has a probability that factors into a product. Satisfying the definition of what it means for random variables to be mutually independent.
+We can confirm that the random variables listed above are mutually independent,
+since the sample space, $Omega$, is built from independent coordinate trials;
+where each outcome is a list of independent results. ( $K_1, K_2, dots, K_(2n),
+Bhat_1, Bhat_2, dots, Bhat_n$) Due to this fact the probability of any outcome
+is the product of the probabilities of each given attempt. In each random
+variable given, $B_(n)$ is only dependent on the $n^"th"$ attempt taken by
+Barbie , and $K_(2n)$ is only dependent on the $(2n)^"th"$ attempt taken by
+Ken. Since any of these events are independent and the probability of any
+combination of them factors into a product, any combination of $K_1, K_2, dots,
+K_(2n), $ and $Bhat_1, $ $ Bhat_2, dots, Bhat_n$ also has a probability that
+factors into a product. Satisfying the definition of what it means for random
+variables to be mutually independent.
 
 = Question 3
 
@@ -402,9 +420,131 @@ $
 = Question 5
 
 // I think this is to be done by chernoff bound, but I'm still figuring out how to do that- Sargun
-We want to find P(W>n). W>n can happen only if at east one of these holds for some $lambda$ such that $0<= lambda<= 1$:
- - K1(~α) + K2(~α) + · · · + K2n(~α) > 2/3n + δ/12n .
- -  ̂B1(~α) + ̂ B2(~α) + · · · + ̂ Bn(~α) > 1/4n + (1−δ)/12n
+// We want to find P(W>n). W>n can happen only if at east one of these holds for some $lambda$ such that $0<= lambda<= 1$:
+//  - K1(~α) + K2(~α) + · · · + K2n(~α) > 2/3n + δ/12n .
+//  -  ̂B1(~α) + ̂ B2(~α) + · · · + ̂ Bn(~α) > 1/4n + (1−δ)/12n
 // applying chernoff to eq1 and then to eq2 and then a union of them?
 
+
+To solve this question for the bound of the probability that Ken gets more balls through the hoop than Barbie does, when $n$ is large, we will be applying Chernoff's Bound (introduced in lecture 21) to give us the tightest bound of when Ken gets more balls through the hoop then Barbie. We can use Chernoff's bound since we have established that the variables are mutually independent. Chernoff's Bound states:
+
+*Theorem (Chernoff Bound).* Let $Omega$ be a finite sample space with probability distribution $P : Omega -> RR$. Suppose that $X_1, X_2, ... , X_n$  are mutually independent random variables such that $X_i : Omega -> {0,1} "for" 1 <= i <= n$, and suppose that $P(X_i = 1) = p$ for every integer $i$ such that $1 <= i <= n$, for a real number $p$ such that $0 <= p <= 1$. Let $X = X_1 + X_2 + ... + X_n$. Then, for every real number $theta$ such that $ 0 <= theta <= 1$,
+
+$ P(X >= (1+theta)pn <= e^(-theta^2/3 pn) $
+
+
+*NOTE:* I will be using the following to refer to certain variables for the sake of clarity:
+$ K = K_1 + K_2 + ... + K_(2n) $
+$ B = hat(B)_1 + hat(B)_2 + ... + hat(B)_n $
+
+Since we are tying to solve for $pW$, and we are given that it holds true as long as one of the given conditions is satisfied. In other words as long as the union of the two conditions are satisfied, we will get $pW$ as shown below. 
+
+$ pW subset.eq  c1 union c2 $
+
+And since we know that $P(A union B) <= P(A) + P(B) $ it would follow that:
+
+$ pW <= c1 + c2 $.
+
+(where $0 <= delta <= 1$)
+
+From here we can apply Chernoff's bound to find the tightest bound for each of the probabilities. From here on out we will be referring to the following as shown bellow for the sake of clarity.
+
+$ P(C_k)  = c1 $
+$ P(C_b) = c2 $
+
+so therefore:
+
+$ pW <= ck + cb $
+
+Let's apply Chernoff's bound to each probability.
+
+*For $ck$:*
+
+Since we need to find a value for $pn$. We can use $E[K]$ which is equal to $E[k_1] + E[k_2] + ... E[k_(2n)]$. Perviously we have established (Question 1, Part A) that $E[K_i] = 1/3$ for any value of $0 < i <= 2n$. So the value of $E[K]$ is the following:
+
+$ E[K] =  sum_(i=1)^(2n)(E[K_i]) $
+$ E[K] = 2n times 1/3 $
+$ E[K] = (2n)/3 $
+
+Therefore, we can understand the formula to be:
+
+$ P(K >= (1+ theta) (2n)/3) <= e^(-theta^2/3((2n)/3)) $
+
+We still need to solve for theta. In the given conditions we know that $K >= 2/3n + delta/12n $ and since we know that $K >= (1+ theta)(2n)/3$ we can set them equal to each other and solve for theta.
+$ 2/3n + delta/12n = (2n)/3 +(2n(theta))/3 $
+$ 2n + delta/4n = 2n + 2n(theta) $
+$ delta/4n = 2n(theta) $
+$ delta/4 = 2(theta) $
+$ delta/8 = theta $
+
+Now we can finally put everything in and apply the theorem as shown below:
+
+$ P(K >= (1+ delta/8) (2n)/3) <= e^(-(delta/8)^2/3((2n)/3)) $
+
+Which can be simplified to:
+
+$ P(K >= (2n)/3 + (delta n)/12 ) <= e^(-(delta^2 n)/288) $
+
+*For $cb$:*
+
+Since we need to find a value for $pn$. We can use $E[B]$ which is equal to $E[hat(B)_1] + E[hat(B)_2] + ... E[hat(B)_n]$. Perviously we have established (Question 1, Part C) that $E[hat(B)_j] = 1/4$ for any value of $0 < j <= n$. So the value of $E[B]$ is the following:
+
+$ E[K] =  sum_(j=1)^(n)(E[hat(B)_j]) $
+$ E[K] = n times 1/4 $
+$ E[K] = (n)/4 $
+
+Therefore, we can understand the formula to be:
+
+$ P(B >= (1+ theta) (n)/4) <= e^(-theta^2/3((n)/4)) $
+
+We still need to solve for theta. In the given conditions we know that $B >= 1/4n + (1-delta)/12n $ and since we know that $B >= (1+ theta)(n)/4$ we can set them equal to each other and solve for theta.
+$ 1/4n + (1 - delta)/12n = (n)/4 +(n(theta))/4 $
+$ n + (1-delta)/3n  = n + n(theta) $
+$ (1-delta)/3n  = n(theta) $
+$ (1-delta)/3  = theta  $
+
+Now we can finally put everything in and apply the theorem as shown below:
+
+$ P(B >= (1+ (1-delta)/3 ) (n)/4) <= e^(-((1-delta)/3)^2/3((n)/4)) $
+
+Which can be simplified to: 
+
+$ P(B >= (n)/4 + ((1 - delta)n)/12) <= e^(-((1-delta)^2n)/108) $
+
+
+Now we can bring this back to the original inequality we had for $pW$ . This can be shown as the following: 
+
+$ pW <= e1 + e2 $
+
+Since in the question we are given the bound of delta to be $0 <= delta <= 1$, we need to find a value for delta that gives the smallest (tightest) value possible for each exponent. To do this we need to set each delta to be equal to each other.
+
+$ -(delta^2 n)/288 = -((1-delta)^2n)/108 $
+$ -(delta^2 )/288 = -((1-delta)^2)/108 $
+$ -((delta^2 )(108))/((288)(108)) = -(((1-delta)^2)(288))/((288)(108)) $
+$ delta^2(108) = (-2delta +delta^2 + 1) (288) $
+$ 108delta^2 = -576delta + 288delta^2 + 288 $
+$ 0 = 288 -576delta + 180delta^2 $
+$ 0 = 5delta^2  - 16delta + 8 $
+
+Here we can use the quadratic formula to solve for delta:
+
+$ x = (-b plus.minus sqrt(b^2 - 4a c))/(2a) $
+
+instead of solving for $x$ we will solve for $delta$
+
+$ delta = (-(-16) plus.minus sqrt((-16)^2 - 4(5)(8)))/(2(5)) $
+$ delta = (16 plus.minus 4 sqrt(6))/10 $
+$ delta = ( 8 plus.minus 2 sqrt(6) )/ 5 $
+
+Now since, $1 < ( 8 plus 2 sqrt(6) )/ 5$, ($ (8 plus 2 sqrt(6))/5$ is roughly 2.58 ) we can discard it and only use $ (8 - 2 sqrt(6))/5$ since it fits in our bounds, $0 <=  (8 - 2 sqrt(6))/5 <= 1 $, ($ (8 - 2 sqrt(6))/5$ is roughly equal to 0.62).
+
+Now we can go back to our original equation to get our final answer to find the tightest bound for $pW$. This can be shown as the following:
+
+$ pW <= e^(-(((8 - 2 sqrt(6))/5)^2 n)/288) + e^(-((1-((8 - 2 sqrt(6))/5))^2n)/108) $
+
+Then after simplifying we get our final answer for the bound of the probability that Ken gets more balls through the hoop than Barbie does, when $n$ is large is:
+
+  $ pW <= 2e^(-n(11-4sqrt(6))/900) $
+
 = Question 6
+

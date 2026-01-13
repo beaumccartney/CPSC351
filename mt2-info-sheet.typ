@@ -3,22 +3,22 @@
   title:  "CPSC 351 MT 2 Info Sheet",
 )
 
-#set page(
-  paper: "us-letter",
-  margin: 0.25cm,
-  columns: 2,
-)
-#set columns(
-  gutter: 10pt,
-)
+// #set page(
+//   paper: "us-letter",
+//   margin: 0.25cm,
+//   columns: 2,
+// )
+// #set columns(
+//   gutter: 10pt,
+// )
 
 #set par(
   justify: true,
 )
 
-#set text(
-  size: 6.54pt
-)
+// #set text(
+//   size: 6.54pt
+// )
 
 #let blank = $union.sq$
 
@@ -76,7 +76,7 @@
 //   - simulation steps?
 //   - halting conds
 
-== Alphabets, Strings, and Languages
+= Alphabets, Strings, and Languages
 
 Definitions:
 - *Alphabet:* a finite non-empty set. Usually called $Sigma$ here.
@@ -90,7 +90,7 @@ Definitions:
   - *Suffix:* a string $mu$ is a *_suffix_* of another string $omega$ if there exists some string $nu$ such that $omega = nu dot mu$ (where $mu, nu, omega in Sigstar$).
 - *Language:* a *_language_* over an alphabet $Sigma$ is a subset of #Sigstar.
 
-== Turing Machines
+= Turing Machines
 
 A *_Turing machine_* is a 7-tuple #turing where:
 - $Q$ is the (finite and nonempty) set of *_states_* (known as the *_finite
@@ -110,7 +110,7 @@ A Turing Machine $M$ accesses and stores on a one-way *_tape_*, consisting of
 an infinite sequence of "cells" that each store a symbol in $Gamma$. $M$ also
 has a *_tape head_* which points to one cell of the tape.
 
-=== Configurations
+== Configurations
 
 The *_configuration_* of a Turing machine is a string of the form $om1 " "q "
 "om2$ where $om1, om2 in Gamstar$ and $q in Q$. The cells left of the tape head
@@ -123,7 +123,7 @@ Let $M$ be a turing machine, and #arbstring be the input string. $M$'s
 *_initial configuration_* for $omega$ is *_$q0 omega$_*, where #q0 is the start
 state of $M$.
 
-=== Moves of $M$ #sym.dash.em Applying the Transition Function
+== Moves of $M$ #sym.dash.em Applying the Transition Function
 
 If the machine is in state #qacc or #qrej, then it's execution is "completed"
 (its execution has *_halted_*) and it cannot take transitions #sym.dash.em note
@@ -158,7 +158,7 @@ cell, in which case it doesn't move at all).
 
 ]
 
-=== Processing Strings
+== Processing Strings
 
 Let #arbstring, and $M$ be a Turing machine.
 
@@ -171,7 +171,7 @@ Let #arbstring, and $M$ be a Turing machine.
 - $M$ *_loops on_* $omega$ if $M$ does not accept *_or_* reject $omega$ i.e.
   $M$'s computation on $omega$ never halts.
 
-=== Processing Languages
+== Processing Languages
 
 Let $L subset.eq Sigstar$, and $M$ be a turing machine.
 
@@ -189,7 +189,7 @@ Let $L subset.eq Sigstar$, and $M$ be a turing machine.
 Thus a language can be proved to be recognizable or decidable by constructing a
 Turing machine that decides or recognizes that language respectively.
 
-=== Nondeterministic Turing Machines
+== Nondeterministic Turing Machines
 
 Same 7-tuple $M$ as standard Turing machines - just different type on the
 transition function.
@@ -207,7 +207,7 @@ Let $M = (Q, Sigma, Gamma, delta, q0, qacc, qrej)$ be a nondeterministic Turing 
 Nondeterministic Turing machines and standard Turing machines can simulate
 each other - meaning they recognize and decide the same languages.
 
-== Simulations
+= Simulations
 
 #[
   #set enum(numbering: "(a)")
@@ -248,7 +248,7 @@ each other - meaning they recognize and decide the same languages.
 
 ]
 
-== Multi-Tape Turing Machines
+= Multi-Tape Turing Machines
 
 For any fixed integer $k >= 1$, a *_$k$-tape Turing Machine_* is a Turing
 machine with $k$ tapes with heads that can move independently, and transitions
@@ -257,7 +257,7 @@ delta, q0, qacc, qrej)$ where everything is the same as standard Turing
 machines except the transition function has the type $delta : (Qtran) times
 Gamma^k arrow.r Q times (Gamma times {"L","R","S"})^k$.
 
-=== Representing Configurations and Moves
+== Representing Configurations and Moves
 
 Let $M = (Q, Sigma, Gamma, delta, q0, qacc, qrej)$ be a k-tape Turing machine.
 
@@ -272,7 +272,7 @@ omega_(1,R) " " sharp " " omega_(1,L) " " q " " omega_(1,R) " " sharp " " dots
   _right_ of the tape head ending with the rightmost non-blank symbol on or to
   the right of the tape head.
 
-=== Processing Strings
+== Processing Strings
 
 The initial configuration for a $k$-tape Turing machine $M$ with input string
 #arbstring is when $M$ is in its start state $q0$, the input string $omega$ is
@@ -283,7 +283,7 @@ Accepting, rejecting, and looping work as they do in standard Turing machines
 (i.e. is an accepting or rejecting state derived from the initial configuration
 for $omega$).
 
-=== Processing Languages
+== Processing Languages
 
 Multi-tape Turing machines and standard Turing machines can simulate each
 other - meaning they recognize and decide the same languages.
@@ -291,9 +291,9 @@ other - meaning they recognize and decide the same languages.
 The *_language_* $L$ of a multi-tape Turing machine $M$, as well as whether M
 *_decides_* or *_recognizes_* $L$, is similar to standard Turing machines.
 
-== Computability
+= Computability
 
-=== Turing Machines That Compute Functions
+== Turing Machines That Compute Functions
 
 #let functype = $f : Sigstar1 arrow.r Sigstar2$
 
@@ -332,7 +332,7 @@ A function #functype is *_computable_* if there exists a one-tape Turing
 machine that computes functions, as defined above, with input alphabet #Sig1
 and output alphabet #Sig2 that computes $f$.
 
-=== Multi-Tape Turing Machines That Compute Functions
+== Multi-Tape Turing Machines That Compute Functions
 
 Let $k$ be a positive integer. A *_$k$-tape Turing machine that computes a
 function_* can be modelled as a 7-tuple $M = (Q, Sig1, Sig2, Gamma, delta,
@@ -358,7 +358,7 @@ Multi-tape Turing machines that can compute functions and standard Turing
 machines that compute functions can simulate each other - meaning they
 recognize and decide the same functions.
 
-=== Universal Turing Machines
+== Universal Turing Machines
 
 #let LTM = $L_"TM"$
 #let SigTM = $Sigma_"TM"$
@@ -414,7 +414,7 @@ machines and input strings to input strings of another Turing machine.
 
 ]
 
-== Reductions
+= Reductions
 
 #let reduc  = $scripts(prec.eq)_"Q"$
 #let Oreduc = $scripts(prec.eq)_"O"$
@@ -427,7 +427,7 @@ over different alphabets) with the following properties:
   and #Sig3) if $L1 reduc L2$ and $L2 reduc L3$, then $L1 reduc L3$ i.e. #reduc
   is *_transitive._*
 
-=== Oracle Reductions
+== Oracle Reductions
 
 NOTE: here, "algorithm", "subroutine", and "procedure" are all Turing
 machines that compute the required function.
@@ -441,7 +441,7 @@ Let #LSig1 and #LSig2. Then #L1 is *_oracle reducible_* to #L2 (notated $L1
 Oreduc L2$) if there exists an algorithm that decides membership in #L1 that
 uses an oracle (i.e. a procedure or subroutine) that decides membership in #L2.
 
-==== Describing an Oracle Reduction Between Languages
+=== Describing an Oracle Reduction Between Languages
 
 To describe an oracle reduction from a language #LSig1 to a language #LSig2:
 + Give pseudocode for an algorithm that decides membership in #L1 using a
@@ -465,7 +465,7 @@ Let #LSig1 and #LSig2, for alphabets #Sig1 and #Sig2:
   *_undecidable_*.
 
 
-==== "Closure-like" Properties
+=== "Closure-like" Properties
 
 Oracle reductions *_cannot_* be used to prove that languages are unrecognizable
 (i.e. #L2 being recognizeable and $L1 Oreduc L2$ does *_not imply that #L1 is
@@ -484,7 +484,7 @@ strings $omega$ for $M$ s.t. $M$ does *_not_* accept $M$:
 - $ATM Oreduc NATM$ meaning that #NATM is *_undecidable_*.
 
 
-=== Many-One Reductions
+== Many-One Reductions
 
 #let MOreducfunc = $f: #Sigstar1 arrow.r #Sigstar2$
 #let MOreduc = $scripts(prec.eq)_M$
@@ -517,7 +517,7 @@ Common pitfalls include a vague/ambiguous/unreadable definition of $f$, $f$ is
 *_partial_*, forgetting step 3 above, and not including enough detail to show
 that $f$ is computable.
 
-==== "Closure-like" Properties
+=== "Closure-like" Properties
 
 Let #Sig1 and #Sig2 be two (possibly identical) alphabets, and let #LSig1 and
 #LSig2 be two languages over these alphabets. If $L1 MOreduc L2$. then the
@@ -538,7 +538,7 @@ To prove that a language $L$ is *_unrecognizable_*, prove that some
 *_unrecognizable_* language $hat(L)$ is *_many-one reducible_* to $L$, then
 conclude by the third fact above that $L$ must also be unrecognizable.
 
-=== Decision Problems
+== Decision Problems
 
 A *_decision problem_* is a computational problem that asks a question with a
 "Yes/No" (think boolean) answer. An *_instance_* is an input to a decision
@@ -604,13 +604,13 @@ Steps for Reductions with decision problems for the "usual situation" above:
   - Details can be added, as needed, to confirm that there is a multi-tape
     Turing machine that computes the function $f$ as well
 
-== Church Turing Thesis
+= Church Turing Thesis
 
 Many abstract models of computation have been proposed, and shown to be
 equivalent to Turing machines with *_simulations_* - its widely believed that
 Turing machines are the "most powerful possible" computers.
 
-== Induction on the length of a string
+= Induction on the length of a string
 
 It's useful to do induction on the length of a string. The idea that enables is
 incrementing the length of a string is just appending a symbol $sigma in Sigma$
@@ -639,7 +639,7 @@ For induction on the length of a string:
   length of the string $omega$, that every string #arbstring \<has desired
   property\>".
 
-== Misc notes:
+= Misc notes:
 
 - $lambda in Sigstar$, always.
 - write answers in *_heavy, dark pencil_*, and *_leave at least a one-inch margin_*.

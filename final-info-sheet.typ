@@ -78,7 +78,7 @@ Definitions:
   - *Suffix:* a string $mu$ is a *_suffix_* of another string $omega$ if there exists some string $nu$ such that $omega = nu dot mu$ (where $mu, nu, omega in Sigstar$).
 - *Language:* a *_language_* over an alphabet $Sigma$ is a subset of #Sigstar.
 
-= DFA Design + Correctness:
+= DFA Design + Correctness
 
 A DFA is a 5-tuple $M = (Q, Sigma, delta, q0, F)$ where $Q$ is the set of
 states, $Sigma$ is the alphabet defining what symbols the DFA can process ($Q
@@ -86,7 +86,7 @@ inter Sigma = emptyset$), $F$ is the set of "accepting states" (thus $F
 subset.eq Q$), $q0 in Q$ is the start state, and $delta : Q times Sigma
 arrow.r Q$ is the transition function.
 
-== Correctness Steps:
+== Correctness Steps
 
 + What should the DFA remember about the string seen so far - make a set for each case
 + Sanity checks:
@@ -101,7 +101,7 @@ arrow.r Q$ is the transition function.
   - For every non-accepting state, its corresponding set is disjoint with $L$
   - Transitions are well defined and line up with sets i.e. if $d(q_i, sigma) = q_j$ then ${omega dot sigma | omega in S_i} subset.eq S_j$
 
-= NFA:
+= NFA
 
 #let deltastar = $delta^star$
 #let lclosure(arg) = {
@@ -132,12 +132,12 @@ An NFA accepts a string $omega in Sigstar$ iff *_$deltastar(q0, omega) inter F
 Processing an input string can be thought of as *keeping track of _all_ the
 states that can be reached as symbols are processed*.
 
-== NFA from DFA:
+== NFA From DFA
 
 Suppose the DFA is $M = (Q, Sigma, delta, q0, F)$, then an NFA with the same
 language $hat(M)$ is just $hat(M) = (Q, Sigma, hat(delta), q0, F) "where" hat(delta)(q, sigma) = cases({delta(q, sigma)} &"if" sigma in Sigma",", emptyset &"if" sigma = lambda.)$
 
-== DFA from NFA:
+== DFA From NFA
 
 About the string seen so far $mu$, DFA needs to remember $deltastar(q0, mu)$
 i.e. the set of states that can be reached from #q0 by processing $mu$. This
@@ -179,21 +179,23 @@ We will keep track of two sets:
 - Eventually $hat(R) = emptyset$, and both $Q$ and $hat(delta)$ have been completed.
 - *REMEMBER THIS:* For all $hat(q) in hat(Q)$, $hat(q)$ should be in $hat(F)$ iff $phi(hat(q)) inter F != emptyset$.
 
-= Regex:
+= Regex
 
-== Language operations:
+== Language Operations
+
 - language union $A union B = {omega in Sigstar | omega in A "or" omega in B}$,
 - language concat $A compose B = {omega_1 dot omega_2 | omega_1 in A "and" omega_2 in B}$
 - language Kleene star $A^star = {omega_1 dot omega_2 dot dot dot omega_k | k >= 0 "and" omega_i in A "for" 1 <= i <= k}$
 
-== Closure properties:
+== Closure Properties
+
 - If $A$ and $B$ are regular languages then $A union B$ is regular.
 - If $A$ and $B$ are regular languages then $A compose B$ is regular.
 - If $A$ is a regular language then $A^*$ is regular.
 
 Recall that the contrapositive of these statements is also true.
 
-== Regex and languages:
+== Regex and Languages
 
 Alphabet $Sigma$ cannot include any of these: $lambda, emptyset, Sigma, (, ), union, compose, star$.
 
@@ -211,7 +213,7 @@ Regex is a string in $Sigma_"regexp"^star$ subject to the following rules:
 
 A language is regular iff there exists a regex that has that language.
 
-== Showing the language/correctness of a regex:
+== Showing the Language/Correctness of a Regex
 
 Identify the languages of the
 smallest regexes, then go up from there, finding the languages of regexes
@@ -222,7 +224,7 @@ composed of other regexes. Eventually you'll end up with the desired language.
   - e.g. "Since $(b union c)$ is a regex, $((b union c))^star$ is a regex with language ${b, c}^star$."
 
 
-= Pumping lemma / non-regular languages:
+= Pumping Lemma / Non-Regular Languages
 
 == Pumping Lemma
 
@@ -239,7 +241,8 @@ following conditions:
 
 Note that $y^i$ is the concatenation of $i$ copies of $y$.
 
-== Proving language is not regular with pumping lemma:
+== Proving Language is Not Regular With Pumping Lemma
+
 + Assume (to obtain a contradiction) language is regular
 + Observe that the pumping lemma holds for the language and write down its conditions
 + Introduce the "pumping length" $p$
@@ -809,11 +812,6 @@ For induction on the length of a string:
   length of the string $omega$, that every string #arbstring \<has desired
   property\>".
 
-= Misc notes:
-
-- $lambda in Sigstar$, always.
-- write answers in *_heavy, dark pencil_*, and *_leave at least a one-inch margin_*.
-
 = Discrete Probability
 
 #let Pd = $upright(P)$
@@ -1013,11 +1011,7 @@ Let $a, b in V$.
 - $Pd(a < X <= b) = 1 arrow a < Ex[X] <= b$
 - if $g, h: RR arrow RR$ and are total, then $Ex[g(X) + h(X)] = Ex[g(X)] + Ex[h(X)]$
 
-Let $h : RR arrow RR$ be a total function with range $[0, infinity)$.
-
-Basic inequality: $ forall a in RR, a > 0 arrow Pd(h(X) >= a) <= Ex[h(X)]/a $
-
-Markov's Inequality: $ forall a in RR, a > 0 arrow Pd(abs(X) >= a) <= Ex[abs(X)]/a $
+=== Variance and Standard Deviation
 
 The *_variance_ of $X$, with respect to $P$* is $ "var"(X) = sum_(mu in Omega)
 (X(mu) - Ex[X])^2 times Pd(mu). $
@@ -1030,6 +1024,14 @@ If the sample space $Omega$ is finite, then the following conditions hold:
   = sum_(i = 1)^n "var"(X_i). $
 
 The *_standard deviation_ of $X$*, denoted $sigma(X)$, is $sqrt("var"(X))$.
+
+=== Bound Inequalities
+
+Let $h : RR arrow RR$ be a total function with range $[0, infinity)$.
+
+Basic inequality: $ forall a in RR, a > 0 arrow Pd(h(X) >= a) <= Ex[h(X)]/a $
+
+Markov's Inequality: $ forall a in RR, a > 0 arrow Pd(abs(X) >= a) <= Ex[abs(X)]/a $
 
 
 Chebyshev's Inequality: Let $a in RR$ s.t. $a > 0$. Then $ Pd(abs(X) >= a) <= Ex[X^2]/a^2. $
@@ -1064,14 +1066,14 @@ Let $n in NN.$
   *_expected_* value of this random variable with respect to this probability
   distribution.
 
-== Randomized Algorithms
+=== Randomized Algorithms
 
 A *_Randomized algorithm_* uses random number generators during execution
 #sym.dash.em so that the neither the generated output, nor the number of steps
 used to generate it, are necessarily _fixed_, even when the algorithm's input
 is.
 
-=== Analysis for a Fixed Input
+==== Analysis for a Fixed Input
 
 Consider the execution(s) of a randomized algorithm, for a given computational
 problem, on a given instance of this problem.
@@ -1088,7 +1090,7 @@ problem, on a given instance of this problem.
   random variable with respect to this probability distribution.
 
 
-=== Running Time as a Function of Input Size
+==== Running Time as a Function of Input Size
 
 - Assuming the _expected running time_ of a randomized algorithm is as defined
   above, the *_worst-case running time_* of that algorithm (w.r. to the prob
@@ -1100,7 +1102,7 @@ problem, on a given instance of this problem.
   time, $T(n)$ is the _maximum_ of the expected running times of the algorithm
   for all inputs of size $n$.
 
-=== Randomized Algorithms That Can Fail
+==== Randomized Algorithms That Can Fail
 
 - A *_Las Vegas_* algorithm for a decision problem is a randomized algorithm
   that can never give a wrong answer.
@@ -1112,3 +1114,8 @@ problem, on a given instance of this problem.
   - For inputs where the answer is "Yes"/`true`, the algorithm returns `false`
     with _at most_ probability $1/2.$
   - i.e. "no false-positives" and "false negatives are rare"
+
+= Misc notes
+
+- $lambda in Sigstar$, always.
+- write answers in *_heavy, dark pencil_*, and *_leave at least a one-inch margin_*.

@@ -1,4 +1,7 @@
-#set document()
+#set document(
+  author: "Beau McCartney",
+  title: "CPSC 351 F2025 MT1 Info Sheet",
+)
 
 #set page(
   paper: "us-letter",
@@ -12,7 +15,7 @@
 #let sigstar = $Sigma^star$
 #let q0      = $q_0$
 
-== Alphabets, Strings, and Languages:
+= Alphabets, Strings, and Languages:
 
 Definitions:
 - *Alphabet:* a finite non-empty set. Usually called $Sigma$ here.
@@ -26,7 +29,7 @@ Definitions:
   - suffix if $omega_2 = lambda$
 - *Language:* a *_language_* over an alphabet $Sigma$ is a subset of #sigstar.
 
-== DFA Design + Correctness:
+= DFA Design + Correctness:
 
 A DFA is a 5-tuple $M = (Q, Sigma, delta, q0, F)$ where $Q$ is the set of
 states, $Sigma$ is the alphabet defining what symbols the DFA can process ($Q
@@ -34,7 +37,8 @@ inter Sigma = emptyset$), $F$ is the set of "accepting states" (thus $F
 subset.eq Q$), $q0 in Q$ is the start state, and $delta : Q times Sigma
 arrow.r Q$ is the transition function.
 
-=== Correctness Steps:
+== Correctness Steps:
+
 + What should the DFA remember about the string seen so far - make a set for each case
 + Sanity checks:
   + Finite number of sets
@@ -48,7 +52,7 @@ arrow.r Q$ is the transition function.
   - For every non-accepting state, its corresponding set is disjoint with $L$
   - Transitions are well defined and line up with sets i.e. if $d(q_i, sigma) = q_j$ then ${omega dot sigma | omega in S_i} subset.eq S_j$
 
-== NFA:
+= NFA:
 
 #let deltastar = $delta^star$
 #let lclosure(arg) = {
@@ -79,12 +83,12 @@ An NFA accepts a string $omega in sigstar$ iff *_$deltastar(q0, omega) inter F
 Processing an input string can be thought of as *keeping track of _all_ the
 states that can be reached as symbols are processed*.
 
-=== NFA from DFA:
+== NFA from DFA:
 
 Suppose the DFA is $M = (Q, Sigma, delta, q0, F)$, then an NFA with the same
 language $hat(M)$ is just $hat(M) = (Q, Sigma, hat(delta), q0, F) "where" hat(delta)(q, sigma) = cases({delta(q, sigma)} &"if" sigma in Sigma",", emptyset &"if" sigma = lambda.)$
 
-=== DFA from NFA:
+== DFA from NFA:
 
 About the string seen so far $mu$, DFA needs to remember $deltastar(q0, mu)$
 i.e. the set of states that can be reached from #q0 by processing $mu$. This
@@ -126,22 +130,21 @@ We will keep track of two sets:
 - eventually $hat(R) = emptyset$, and both $Q$ and $hat(delta)$ have been completed.
 - *REMEMBER THIS:* For all $hat(q) in hat(Q)$, $hat(q)$ should be in $hat(F)$ iff $phi(hat(q)) inter F != emptyset$.
 
-#pagebreak()
-== Regex:
+= Regex:
 
-=== Language operations:
+== Language operations:
 - language union $A union B = {omega in sigstar | omega in A "or" omega in B}$,
 - language concat $A compose B = {omega_1 dot omega_2 | omega_1 in A "and" omega_2 in B}$
 - language Kleene star $A^star = {omega_1 dot omega_2 dot dot dot omega_k | k >= 0 "and" omega_i in A "for" 1 <= i <= k}$
 
-=== Closure properties:
+== Closure properties:
 - if $A$ and $B$ are regular languages then $A union B$ is regular
 - if $A$ and $B$ are regular languages then $A compose B$ is regular
 - if $A$ is a regular language then $A^*$ is regular
 
 Recall that the contrapositive of these statements is also true.
 
-=== Regex and languages:
+== Regex and languages:
 
 Alphabet $Sigma$ cannot include any of these: $lambda, emptyset, Sigma, (, ), union, compose, star$.
 
@@ -159,7 +162,7 @@ Regex is a string in $Sigma_"regexp"^star$ subject to the following rules:
 
 A language is regular iff there exists a regex that has that language.
 
-=== Showing the language/correctness of a regex:
+== Showing the language/correctness of a regex:
 
 Identify the languages of the
 smallest regexes, then go up from there, finding the languages of regexes
@@ -170,9 +173,9 @@ composed of other regexes. Eventually you'll end up with the desired language.
   - e.g. "Since $(b union c)$ is a regex, $((b union c))^star$ is a regex with language ${b, c}^star$."
 
 
-== Pumping lemma / non-regular languages:
+= Pumping lemma / non-regular languages:
 
-=== Pumping Lemma
+== Pumping Lemma
 
 Let $L subset.eq sigstar$.
 
@@ -187,7 +190,7 @@ following conditions:
 
 Note that $y^i$ is the concatenation of $i$ copies of $y$.
 
-=== Proving language is not regular with pumping lemma:
+== Proving language is not regular with pumping lemma:
 + Assume (to obtain a contradiction) language is regular
 + Observe that the pumping lemma holds for the language and write down its conditions 
 + Introduce the "pumping length" $p$
@@ -206,7 +209,7 @@ Notes:
 - $i = 0$ and $i = 2$ are good starting choices
 - observe how proof follows lemma's structure
 
-== Induction on the length of a string
+= Induction on the length of a string
 
 It's useful to do induction on the length of a string. The idea that enables is
 incrementing the length of a string is just appending a symbol $sigma in Sigma$
@@ -229,6 +232,6 @@ For induction on the length of a string:
   - show that $omega$ isn't empty, and in particular $omega = mu dot sigma$ for some $mu in sigstar$ and $sigma in Sigma$
 - proof should end with a conclusion e.g. "It now follows, by induction on length of the string $omega$, that every string $omega in sigstar$ \<has desired property\>"
 
-== Misc notes:
+= Misc notes:
 
 $lambda in sigstar$, always
